@@ -1,0 +1,289 @@
+<div class="slots-page">
+  <header class="slots-header">
+    <button (click)="goBack()" class="btn-back">← Lobby</button>
+    <h1>VIKINGS SLOTS</h1>
+    <button (click)="togglePaytable()" class="btn-paytable">Paytable</button>
+  </header>
+
+  <!-- Daily Credits Banner -->
+  <div class="daily-banner" *ngIf="showDailyBanner">
+    <div class="banner-content">
+      <h3>🎁 Daily Bonus Claimed!</h3>
+      <p>+1000 Credits Added</p>
+      <p class="next-bonus">Next bonus in: {{ timeUntilNextCredit }}</p>
+    </div>
+  </div>
+
+  <!-- Paytable Modal -->
+  <div class="paytable-modal" *ngIf="showPaytable" (click)="showPaytable = false">
+    <div class="paytable-content" (click)="$event.stopPropagation()">
+      <h2>💰 PAYTABLE & RULES 💰</h2>
+
+      <!-- Symbol Payouts Section -->
+      <div class="paytable-section">
+        <h3>🎰 Symbol Payouts</h3>
+        <p class="bet-note">
+          All payouts shown for <strong>1 credit</strong> bet per line. Multiply by your bet amount.
+        </p>
+
+        <div class="symbols-grid">
+          <div class="symbol-card jackpot">
+            <div class="symbol-icon">🏆</div>
+            <div class="symbol-name">TROPHY</div>
+            <div class="symbol-pays">
+              <div class="pay-line"><span class="count">5×</span> = <strong>2000</strong></div>
+              <div class="pay-line"><span class="count">4×</span> = <strong>400</strong></div>
+              <div class="pay-line"><span class="count">3×</span> = <strong>80</strong></div>
+              <div class="pay-line"><span class="count">2×</span> = <strong>10</strong></div>
+            </div>
+          </div>
+
+          <div class="symbol-card high">
+            <div class="symbol-icon">🏈</div>
+            <div class="symbol-name">FOOTBALL</div>
+            <div class="symbol-pays">
+              <div class="pay-line"><span class="count">5×</span> = <strong>1000</strong></div>
+              <div class="pay-line"><span class="count">4×</span> = <strong>200</strong></div>
+              <div class="pay-line"><span class="count">3×</span> = <strong>50</strong></div>
+              <div class="pay-line"><span class="count">2×</span> = <strong>5</strong></div>
+            </div>
+          </div>
+
+          <div class="symbol-card high">
+            <div class="symbol-icon">⚔️</div>
+            <div class="symbol-name">SWORD</div>
+            <div class="symbol-pays">
+              <div class="pay-line"><span class="count">5×</span> = <strong>600</strong></div>
+              <div class="pay-line"><span class="count">4×</span> = <strong>150</strong></div>
+              <div class="pay-line"><span class="count">3×</span> = <strong>40</strong></div>
+              <div class="pay-line"><span class="count">2×</span> = <strong>4</strong></div>
+            </div>
+          </div>
+
+          <div class="symbol-card medium">
+            <div class="symbol-icon">🛡️</div>
+            <div class="symbol-name">SHIELD</div>
+            <div class="symbol-pays">
+              <div class="pay-line"><span class="count">5×</span> = <strong>400</strong></div>
+              <div class="pay-line"><span class="count">4×</span> = <strong>100</strong></div>
+              <div class="pay-line"><span class="count">3×</span> = <strong>25</strong></div>
+              <div class="pay-line"><span class="count">2×</span> = <strong>3</strong></div>
+            </div>
+          </div>
+
+          <div class="symbol-card medium">
+            <div class="symbol-icon">👑</div>
+            <div class="symbol-name">CROWN</div>
+            <div class="symbol-pays">
+              <div class="pay-line"><span class="count">5×</span> = <strong>300</strong></div>
+              <div class="pay-line"><span class="count">4×</span> = <strong>80</strong></div>
+              <div class="pay-line"><span class="count">3×</span> = <strong>20</strong></div>
+              <div class="pay-line"><span class="count">2×</span> = <strong>2</strong></div>
+            </div>
+          </div>
+
+          <div class="symbol-card low">
+            <div class="symbol-icon">⚡</div>
+            <div class="symbol-name">LIGHTNING</div>
+            <div class="symbol-pays">
+              <div class="pay-line"><span class="count">5×</span> = <strong>200</strong></div>
+              <div class="pay-line"><span class="count">4×</span> = <strong>50</strong></div>
+              <div class="pay-line"><span class="count">3×</span> = <strong>15</strong></div>
+            </div>
+          </div>
+
+          <div class="symbol-card low">
+            <div class="symbol-icon">💜</div>
+            <div class="symbol-name">HEART</div>
+            <div class="symbol-pays">
+              <div class="pay-line"><span class="count">5×</span> = <strong>150</strong></div>
+              <div class="pay-line"><span class="count">4×</span> = <strong>40</strong></div>
+              <div class="pay-line"><span class="count">3×</span> = <strong>10</strong></div>
+            </div>
+          </div>
+
+          <div class="symbol-card low">
+            <div class="symbol-icon">V</div>
+            <div class="symbol-name">VIKINGS V</div>
+            <div class="symbol-pays">
+              <div class="pay-line"><span class="count">5×</span> = <strong>100</strong></div>
+              <div class="pay-line"><span class="count">4×</span> = <strong>30</strong></div>
+              <div class="pay-line"><span class="count">3×</span> = <strong>8</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paylines Visualization -->
+      <div class="paytable-section">
+        <h3>📊 25 Paylines Visualization</h3>
+        <p class="paylines-info">Click on a payline to see how it works across the reels</p>
+
+        <div class="paylines-grid">
+          <div
+            class="payline-visual"
+            *ngFor="let line of PAYLINES; let i = index"
+            (click)="highlightPayline(i)"
+            [class.active]="highlightedPayline === i"
+          >
+            <div class="line-number">Line {{ i + 1 }}</div>
+            <div class="mini-grid">
+              <div class="mini-reel" *ngFor="let pos of [0,1,2,3,4]">
+                <div class="mini-cell" [class.active]="line[pos] === 0"></div>
+                <div class="mini-cell" [class.active]="line[pos] === 1"></div>
+                <div class="mini-cell" [class.active]="line[pos] === 2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rules -->
+      <div class="paytable-section">
+        <h3>📜 Game Rules</h3>
+        <ul class="rules-list">
+          <li>All 25 paylines are active on every spin</li>
+          <li>Wins pay left to right on consecutive reels</li>
+          <li>Premium symbols (🏆🏈⚔️🛡️👑) pay on 2+ matches</li>
+          <li>Standard symbols (⚡💜V) pay on 3+ matches</li>
+          <li>Multiple winning lines pay out separately</li>
+          <li>Maximum payout per spin: 50,000 credits</li>
+        </ul>
+      </div>
+
+      <!-- Provably Fair -->
+      <div class="paytable-section provably-fair">
+        <h3>🔐 Provably Fair Gaming</h3>
+        <p class="fair-desc">Every spin is verifiable using cryptographic hashing</p>
+        <div class="fair-info">
+          <div class="fair-item">
+            <strong>Client Seed:</strong>
+            <code>{{ clientSeed }}</code>
+            <button (click)="regenerateClientSeed()" class="btn-regenerate">New Seed</button>
+          </div>
+          <div class="fair-item">
+            <strong>Nonce:</strong> {{ spinNonce }}
+          </div>
+          <div class="fair-item">
+            <strong>Last Spin Hash:</strong>
+            <code class="hash">{{ lastSpinHash || 'Spin to generate' }}</code>
+          </div>
+        </div>
+        <p class="fair-note">
+          Each spin combines server seed + client seed + nonce to generate verifiable random results
+        </p>
+      </div>
+
+      <!-- Daily Credits -->
+      <div class="paytable-section">
+        <h3>💎 Daily Bonus</h3>
+        <ul class="rules-list">
+          <li>Receive 1,000 free credits every day</li>
+          <li>Credits automatically added on first login</li>
+          <li>Maximum balance: 50,000 credits</li>
+          <li>Next daily bonus: {{ timeUntilNextCredit }}</li>
+        </ul>
+      </div>
+
+      <button (click)="showPaytable = false" class="btn-close">Close</button>
+    </div>
+  </div>
+
+  <div class="slots-container">
+    <div id="slotMachine">
+      <div id="winOverlay" *ngIf="showWinOverlay">
+        <div id="winMessage">
+          <div class="win-title">{{ winTitle }}</div>
+          <div class="win-amount">{{ winAmount }}</div>
+
+          <div class="win-details" *ngIf="currentWins.length > 0">
+            <div class="win-summary">
+              {{ currentWins.length }} Winning Line{{ currentWins.length > 1 ? 's' : '' }}
+            </div>
+            <div *ngFor="let win of currentWins" class="win-line">
+              Line {{ win.lineIndex + 1 }}: {{ win.count }} × {{ win.symbol }} = {{ win.payout }} credits
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="header">
+        <div id="logo">⚔️ VIKINGS SLOTS ⚔️</div>
+        <div id="fairness-badge" (click)="showPaytable = true; scrollToFairness()">
+          🔐 Provably Fair
+        </div>
+      </div>
+
+      <div id="reelsContainer">
+        <svg class="paylines-svg" viewBox="0 0 540 315" preserveAspectRatio="none">
+          <line x1="0" y1="52.5" x2="540" y2="52.5" [attr.opacity]="winningLines.has(0) ? '1' : '0.2'" stroke="#FFD700" stroke-width="3"/>
+          <line x1="0" y1="157.5" x2="540" y2="157.5" [attr.opacity]="winningLines.has(1) ? '1' : '0.2'" stroke="#FF6B6B" stroke-width="3"/>
+          <line x1="0" y1="262.5" x2="540" y2="262.5" [attr.opacity]="winningLines.has(2) ? '1' : '0.2'" stroke="#4ECDC4" stroke-width="3"/>
+          <line x1="0" y1="105" x2="540" y2="105" [attr.opacity]="winningLines.has(3) ? '1' : '0.2'" stroke="#95E1D3" stroke-width="3"/>
+          <line x1="0" y1="210" x2="540" y2="210" [attr.opacity]="winningLines.has(4) ? '1' : '0.2'" stroke="#F38181" stroke-width="3"/>
+          <polyline points="0,52.5 135,157.5 270,262.5 405,157.5 540,52.5" [attr.opacity]="winningLines.has(5) ? '1' : '0.2'" stroke="#AA96DA" stroke-width="3" fill="none"/>
+          <polyline points="0,262.5 135,157.5 270,52.5 405,157.5 540,262.5" [attr.opacity]="winningLines.has(6) ? '1' : '0.2'" stroke="#FCBAD3" stroke-width="3" fill="none"/>
+          <polyline points="0,105 135,157.5 270,210 405,157.5 540,105" [attr.opacity]="winningLines.has(7) ? '1' : '0.2'" stroke="#FFFFD2" stroke-width="3" fill="none"/>
+          <polyline points="0,210 135,157.5 270,105 405,157.5 540,210" [attr.opacity]="winningLines.has(8) ? '1' : '0.2'" stroke="#A8D8EA" stroke-width="3" fill="none"/>
+          <polyline points="0,52.5 108,157.5 216,52.5 324,157.5 432,52.5 540,157.5" [attr.opacity]="winningLines.has(9) ? '1' : '0.2'" stroke="#FF6B9D" stroke-width="3" fill="none"/>
+          <polyline points="0,262.5 108,157.5 216,262.5 324,157.5 432,262.5 540,157.5" [attr.opacity]="winningLines.has(10) ? '1' : '0.2'" stroke="#C44569" stroke-width="3" fill="none"/>
+          <polyline points="0,157.5 108,52.5 216,157.5 324,262.5 432,157.5 540,52.5" [attr.opacity]="winningLines.has(11) ? '1' : '0.2'" stroke="#F8B500" stroke-width="3" fill="none"/>
+          <polyline points="0,157.5 108,262.5 216,157.5 324,52.5 432,157.5 540,262.5" [attr.opacity]="winningLines.has(12) ? '1' : '0.2'" stroke="#6BCB77" stroke-width="3" fill="none"/>
+          <polyline points="0,52.5 135,105 270,157.5 405,210 540,262.5" [attr.opacity]="winningLines.has(13) ? '1' : '0.2'" stroke="#4D96FF" stroke-width="3" fill="none"/>
+          <polyline points="0,262.5 135,210 270,157.5 405,105 540,52.5" [attr.opacity]="winningLines.has(14) ? '1' : '0.2'" stroke="#FFB6B9" stroke-width="3" fill="none"/>
+          <polyline points="0,105 135,52.5 270,105 405,157.5 540,210" [attr.opacity]="winningLines.has(15) ? '1' : '0.2'" stroke="#BAE8E8" stroke-width="3" fill="none"/>
+          <polyline points="0,210 135,262.5 270,210 405,157.5 540,105" [attr.opacity]="winningLines.has(16) ? '1' : '0.2'" stroke="#FFEAA7" stroke-width="3" fill="none"/>
+          <polyline points="0,157.5 135,105 270,52.5 405,105 540,157.5" [attr.opacity]="winningLines.has(17) ? '1' : '0.2'" stroke="#DDA15E" stroke-width="3" fill="none"/>
+          <polyline points="0,157.5 135,210 270,262.5 405,210 540,157.5" [attr.opacity]="winningLines.has(18) ? '1' : '0.2'" stroke="#BC6C25" stroke-width="3" fill="none"/>
+          <polyline points="0,52.5 135,210 270,52.5 405,210 540,52.5" [attr.opacity]="winningLines.has(19) ? '1' : '0.2'" stroke="#E07A5F" stroke-width="3" fill="none"/>
+          <polyline points="0,262.5 135,105 270,262.5 405,105 540,262.5" [attr.opacity]="winningLines.has(20) ? '1' : '0.2'" stroke="#81B29A" stroke-width="3" fill="none"/>
+          <polyline points="0,105 135,210 270,105 405,210 540,105" [attr.opacity]="winningLines.has(21) ? '1' : '0.2'" stroke="#F2CC8F" stroke-width="3" fill="none"/>
+          <polyline points="0,210 135,105 270,210 405,105 540,210" [attr.opacity]="winningLines.has(22) ? '1' : '0.2'" stroke="#3D5A80" stroke-width="3" fill="none"/>
+          <polyline points="0,157.5 135,52.5 270,157.5 405,262.5 540,157.5" [attr.opacity]="winningLines.has(23) ? '1' : '0.2'" stroke="#EE6C4D" stroke-width="3" fill="none"/>
+          <polyline points="0,157.5 135,262.5 270,157.5 405,52.5 540,157.5" [attr.opacity]="winningLines.has(24) ? '1' : '0.2'" stroke="#98C1D9" stroke-width="3" fill="none"/>
+        </svg>
+
+        <div id="reels">
+          <div class="reel" *ngFor="let reel of reels; let i = index">
+            <div class="symbols" [id]="'reel-' + i">
+              <div *ngFor="let symbol of reel.symbols" class="symbol" [class.winning]="false">
+                {{ symbol }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="controls">
+        <div class="info-panel">
+          <div class="info-item">
+            <span class="label">Credits:</span>
+            <span class="value">{{ balance }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Bet/Line:</span>
+            <span class="value">{{ currentBet }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Total Bet:</span>
+            <span class="value">{{ currentBet * 25 }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Last Win:</span>
+            <span class="value win-value">{{ lastWin }}</span>
+          </div>
+        </div>
+
+        <div class="button-panel">
+          <button (click)="decreaseBet()" [disabled]="isSpinning" class="btn-bet">-</button>
+          <button (click)="spin()" [disabled]="isSpinning || balance < currentBet * 25" class="btn-spin">
+            {{ isSpinning ? 'SPINNING...' : 'SPIN' }}
+          </button>
+          <button (click)="increaseBet()" [disabled]="isSpinning" class="btn-bet">+</button>
+        </div>
+
+        <button (click)="maxBet()" [disabled]="isSpinning" class="btn-max-bet">MAX BET</button>
+      </div>
+    </div>
+  </div>
+</div>
