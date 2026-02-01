@@ -23,17 +23,17 @@ interface WinResult {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './skol-slot.html',
-  styleUrl: './skol-slot.css',
+  styleUrls: ['./skol-slot.css'], // NOTE: styleUrls (plural)
 })
 export class SkolSlotComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly SYMBOLS = ['🏆', '🏈', '⚔️', '🛡️', '👑', '⚡', '💜', 'V'];
 
   private readonly REEL_STRIPS = [
-    ['⚡', '💜', 'V', '👑', '🛡️', '⚔️', '💜', 'V', '⚡', '👑', '🛡️', 'V', '💜', '⚔️', '🏈', 'V', '⚡', '👑', '💜', '🛡️', 'V', '⚔️', '⚡', '👑', '🏆', 'V', '💜', '🛡️', '⚔️', 'V'],
-    ['V', '💜', '⚡', '🛡️', '👑', 'V', '⚔️', '💜', '⚡', '🛡️', 'V', '👑', '🏈', '💜', '⚡', 'V', '🛡️', '👑', '⚔️', 'V', '💜', '⚡', '🏆', '🛡️', 'V', '👑', '💜', '⚔️', 'V', '⚡'],
-    ['⚡', 'V', '👑', '💜', '🛡️', '⚔️', 'V', '⚡', '💜', '🏈', '👑', '🛡️', 'V', '⚔️', '⚡', '💜', 'V', '👑', '🛡️', '🏆', '⚔️', 'V', '⚡', '💜', '👑', 'V', '🛡️', '⚔️', '💜', 'V'],
-    ['💜', 'V', '⚡', '🛡️', '👑', '⚔️', 'V', '💜', '⚡', '🛡️', '👑', 'V', '⚔️', '🏈', '💜', '⚡', 'V', '🛡️', '👑', '⚔️', '💜', 'V', '⚡', '🏆', '🛡️', '👑', 'V', '⚔️', '💜', 'V'],
-    ['V', '⚡', '💜', '👑', '🛡️', 'V', '⚔️', '⚡', '💜', '🛡️', '👑', 'V', '⚔️', '⚡', '🏈', '💜', 'V', '🛡️', '👑', '⚔️', 'V', '⚡', '💜', '🛡️', '🏆', '👑', 'V', '⚔️', '⚡', 'V'],
+    ['⚡','💜','V','👑','🛡️','⚔️','💜','V','⚡','👑','🛡️','V','💜','⚔️','🏈','V','⚡','👑','💜','🛡️','V','⚔️','⚡','👑','🏆','V','💜','🛡️','⚔️','V'],
+    ['V','💜','⚡','🛡️','👑','V','⚔️','💜','⚡','🛡️','V','👑','🏈','💜','⚡','V','🛡️','👑','⚔️','V','💜','⚡','🏆','🛡️','V','👑','💜','⚔️','V','⚡'],
+    ['⚡','V','👑','💜','🛡️','⚔️','V','⚡','💜','🏈','👑','🛡️','V','⚔️','⚡','💜','V','👑','🛡️','🏆','⚔️','V','⚡','💜','👑','V','🛡️','⚔️','💜','V'],
+    ['💜','V','⚡','🛡️','👑','⚔️','V','💜','⚡','🛡️','👑','V','⚔️','🏈','💜','⚡','V','🛡️','👑','⚔️','💜','V','⚡','🏆','🛡️','👑','V','⚔️','💜','V'],
+    ['V','⚡','💜','👑','🛡️','V','⚔️','⚡','💜','🛡️','👑','V','⚔️','⚡','🏈','💜','V','🛡️','👑','⚔️','V','⚡','💜','🛡️','🏆','👑','V','⚔️','⚡','V'],
   ];
 
   private readonly SYMBOL_HEIGHT = 105;
@@ -48,27 +48,27 @@ export class SkolSlotComponent implements OnInit, AfterViewInit, OnDestroy {
     '👑': { 5: 300, 4: 80, 3: 20, 2: 2 },
     '⚡': { 5: 200, 4: 50, 3: 15 },
     '💜': { 5: 150, 4: 40, 3: 10 },
-    'V': { 5: 100, 4: 30, 3: 8 },
+    'V':  { 5: 100, 4: 30, 3: 8 },
   };
 
   readonly PAYLINES: number[][] = [
-    [0, 0, 0, 0, 0], [1, 1, 1, 1, 1], [2, 2, 2, 2, 2],
-    [0, 1, 1, 1, 0], [2, 1, 1, 1, 2], [0, 1, 2, 1, 0],
-    [2, 1, 0, 1, 2], [0, 1, 0, 1, 0], [2, 1, 2, 1, 2],
-    [0, 0, 1, 2, 2], [2, 2, 1, 0, 0], [1, 0, 1, 2, 1],
-    [1, 2, 1, 0, 1], [0, 1, 0, 2, 0], [2, 1, 2, 0, 2],
-    [0, 0, 0, 1, 2], [2, 2, 2, 1, 0], [1, 0, 0, 0, 1],
-    [1, 2, 2, 2, 1], [0, 2, 0, 2, 0], [2, 0, 2, 0, 2],
-    [0, 1, 2, 0, 1], [2, 1, 0, 2, 1], [1, 0, 1, 0, 1],
-    [1, 2, 1, 2, 1],
+    [0,0,0,0,0],[1,1,1,1,1],[2,2,2,2,2],
+    [0,1,1,1,0],[2,1,1,1,2],[0,1,2,1,0],
+    [2,1,0,1,2],[0,1,0,1,0],[2,1,2,1,2],
+    [0,0,1,2,2],[2,2,1,0,0],[1,0,1,2,1],
+    [1,2,1,0,1],[0,1,0,2,0],[2,1,2,0,2],
+    [0,0,0,1,2],[2,2,2,1,0],[1,0,0,0,1],
+    [1,2,2,2,1],[0,2,0,2,0],[2,0,2,0,2],
+    [0,1,2,0,1],[2,1,0,2,1],[1,0,1,0,1],
+    [1,2,1,2,1],
   ];
 
   balance = 0;
   currentBet = 1;
   lastWin = 0;
   isSpinning = false;
-  isSaving = false;
-  betIndex = 0;
+  private isSaving = false;
+  private betIndex = 0;
 
   showWinOverlay = false;
   showPaytable = false;
@@ -97,7 +97,7 @@ export class SkolSlotComponent implements OnInit, AfterViewInit, OnDestroy {
     private creditsService: CreditsService,
     private auth: Auth
   ) {
-    this.reels = Array(5).fill(null).map((_, index) => ({
+    this.reels = Array.from({ length: 5 }, (_, index) => ({
       symbols: this.REEL_STRIPS[index]
         ? [...this.REEL_STRIPS[index], ...this.REEL_STRIPS[index], ...this.REEL_STRIPS[index]]
         : [],
@@ -117,10 +117,7 @@ export class SkolSlotComponent implements OnInit, AfterViewInit, OnDestroy {
     setTimeout(() => {
       this.initReels();
       setTimeout(() => {
-        if (!this.reelsInitialized) {
-          console.warn('Reels not initialized, retrying...');
-          this.initReels();
-        }
+        if (!this.reelsInitialized) this.initReels();
       }, 300);
     }, 150);
   }
@@ -156,8 +153,7 @@ export class SkolSlotComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async updateTimeUntilNextCredit(): Promise<void> {
-    this.timeUntilNextCredit =
-      await this.creditsService.getTimeUntilNextDailyCredit();
+    this.timeUntilNextCredit = await this.creditsService.getTimeUntilNextDailyCredit();
   }
 
   calculatePayout(symbol: string, count: number): number {
@@ -175,15 +171,14 @@ export class SkolSlotComponent implements OnInit, AfterViewInit, OnDestroy {
 
   scrollToFairness(): void {
     setTimeout(() => {
-      const fairSection = document.querySelector('.provably-fair');
-      fairSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.querySelector('.provably-fair')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 100);
   }
 
   private generateRandomSeed(): string {
     const array = new Uint8Array(16);
     crypto.getRandomValues(array);
-    return Array.from(array, (byte) => byte.toString(16).padStart(2, '0')).join('');
+    return Array.from(array, b => b.toString(16).padStart(2, '0')).join('');
   }
 
   regenerateClientSeed(): void {
@@ -195,8 +190,7 @@ export class SkolSlotComponent implements OnInit, AfterViewInit, OnDestroy {
     const encoder = new TextEncoder();
     const dataBuffer = encoder.encode(data);
     const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+    return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
   }
 
   private async generateProvablyFairResult(): Promise<number[]> {
@@ -206,10 +200,9 @@ export class SkolSlotComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const positions: number[] = [];
     for (let i = 0; i < 5; i++) {
-      const hashSegment = this.lastSpinHash.substring(i * 12, (i + 1) * 12);
-      const numericValue = parseInt(hashSegment, 16);
-      const position = numericValue % this.REEL_STRIPS[i].length;
-      positions.push(position);
+      const seg = this.lastSpinHash.substring(i * 12, (i + 1) * 12);
+      const num = parseInt(seg, 16);
+      positions.push(num % this.REEL_STRIPS[i].length);
     }
     return positions;
   }
@@ -217,50 +210,44 @@ export class SkolSlotComponent implements OnInit, AfterViewInit, OnDestroy {
   private initReels(): void {
     let allFound = true;
 
-    for (let index = 0; index < 5; index++) {
-      const reelElement = document.getElementById('reel-' + index);
-
-      if (!reelElement) {
-        console.error(`Reel element not found: reel-${index}`);
+    for (let i = 0; i < 5; i++) {
+      const el = document.getElementById('reel-' + i);
+      if (!el) {
         allFound = false;
         continue;
       }
-
-      this.reels[index].element = reelElement;
-      this.reels[index].position = 0;
-
-      reelElement.style.transform = 'translateY(0px)';
-      reelElement.style.transition = 'none';
-      reelElement.style.willChange = 'transform';
+      this.reels[i].element = el;
+      this.reels[i].position = 0;
+      el.style.transform = 'translateY(0px)';
+      el.style.transition = 'none';
+      el.style.willChange = 'transform';
     }
 
     this.reelsInitialized = allFound;
   }
 
   async spin(): Promise<void> {
-    if (this.isSpinning || this.balance < this.currentBet * 25 || !this.reelsInitialized) {
-      if (!this.reelsInitialized) console.error('Cannot spin: reels not initialized');
-      return;
-    }
+    if (this.isSpinning || !this.reelsInitialized) return;
+
+    const totalBet = this.currentBet * 25;
+    if (this.balance < totalBet) return;
 
     this.isSpinning = true;
-    this.balance -= this.currentBet * 25;
+    this.balance -= totalBet;
     this.lastWin = 0;
     this.winningReels.clear();
     this.winningLines.clear();
     this.currentWins = [];
 
     const targetPositions = await this.generateProvablyFairResult();
-
     const spinPromises: Promise<void>[] = [];
 
     for (let index = 0; index < 5; index++) {
       const reel = this.reels[index];
       const reelElement = reel.element;
-
       if (!reelElement) continue;
 
-      const promise = new Promise<void>((resolve) => {
+      spinPromises.push(new Promise<void>((resolve) => {
         reelElement.style.transition = 'none';
 
         const stripLength = this.REEL_STRIPS[index].length;
@@ -273,30 +260,22 @@ export class SkolSlotComponent implements OnInit, AfterViewInit, OnDestroy {
         const animate = () => {
           const elapsed = Date.now() - startTime;
           const progress = Math.min(elapsed / duration, 1);
-
           const easeOut = 1 - Math.pow(1 - progress, 3);
+
           const currentPos = startPos + (targetPos - startPos) * easeOut;
-          const pixels = currentPos * this.SYMBOL_HEIGHT;
+          reelElement.style.transform = `translateY(-${currentPos * this.SYMBOL_HEIGHT}px)`;
 
-          reelElement.style.transform = `translateY(-${pixels}px)`;
-
-          if (progress < 1) {
-            requestAnimationFrame(animate);
-          } else {
-            const normalizedPos = targetPos % stripLength;
-            reel.position = normalizedPos;
-
-            const finalPixels = normalizedPos * this.SYMBOL_HEIGHT;
-            reelElement.style.transform = `translateY(-${finalPixels}px)`;
-
+          if (progress < 1) requestAnimationFrame(animate);
+          else {
+            const normalized = targetPos % stripLength;
+            reel.position = normalized;
+            reelElement.style.transform = `translateY(-${normalized * this.SYMBOL_HEIGHT}px)`;
             resolve();
           }
         };
 
         setTimeout(() => requestAnimationFrame(animate), index * 150);
-      });
-
-      spinPromises.push(promise);
+      }));
     }
 
     await Promise.all(spinPromises);
@@ -309,16 +288,15 @@ export class SkolSlotComponent implements OnInit, AfterViewInit, OnDestroy {
 
     for (let reelIndex = 0; reelIndex < 5; reelIndex++) {
       const reel = this.reels[reelIndex];
-      const column: string[] = [];
+      const col: string[] = [];
       const basePos = Math.floor(reel.position);
       const stripLength = this.REEL_STRIPS[reelIndex].length;
 
       for (let i = 0; i < this.VISIBLE_SYMBOLS; i++) {
-        const index = (basePos + i) % stripLength;
-        column.push(this.REEL_STRIPS[reelIndex][index]);
+        col.push(this.REEL_STRIPS[reelIndex][(basePos + i) % stripLength]);
       }
 
-      grid.push(column);
+      grid.push(col);
     }
 
     return grid;
@@ -326,51 +304,38 @@ export class SkolSlotComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private async checkWin(): Promise<void> {
     const grid = this.getVisibleSymbols();
-    let totalWinCoins = 0;
-    const winningReelsSet = new Set<number>();
-    const winningLinesSet = new Set<number>();
+    let totalWin = 0;
     const wins: WinResult[] = [];
+    const winningLinesSet = new Set<number>();
 
     this.PAYLINES.forEach((payline, lineIndex) => {
-      const lineSymbols = payline.map((row, col) => grid[col][row]);
-      const lineWin = this.checkLine(lineSymbols);
-
+      const symbols = payline.map((row, col) => grid[col][row]);
+      const lineWin = this.checkLine(symbols);
       if (lineWin.payout > 0) {
-        totalWinCoins += lineWin.payout;
-        lineWin.positions.forEach((pos) => winningReelsSet.add(pos));
+        totalWin += lineWin.payout;
         winningLinesSet.add(lineIndex);
-
-        wins.push({
-          lineIndex,
-          symbol: lineWin.symbol,
-          count: lineWin.count,
-          payout: lineWin.payout,
-          positions: lineWin.positions,
-        });
+        wins.push({ lineIndex, ...lineWin });
       }
     });
 
-    if (totalWinCoins > 0) {
-      this.balance += totalWinCoins;
-      this.lastWin = totalWinCoins;
-      this.winningReels = winningReelsSet;
+    if (totalWin > 0) {
+      this.balance += totalWin;
+      this.lastWin = totalWin;
       this.winningLines = winningLinesSet;
       this.currentWins = wins;
 
       try {
-        await this.creditsService.recordWin(this.userId, totalWinCoins);
-      } catch (error) {
-        console.error('Error recording win:', error);
-      }
+        await this.creditsService.recordWin(this.userId, totalWin);
+      } catch {}
 
-      this.showWinAnimation(totalWinCoins);
+      this.showWinAnimation(totalWin);
     } else {
       await this.saveBalance();
     }
   }
 
   private checkLine(symbols: string[]): { payout: number; positions: number[]; symbol: string; count: number } {
-    let bestWin = { payout: 0, positions: [] as number[], symbol: '', count: 0 };
+    let best = { payout: 0, positions: [] as number[], symbol: '', count: 0 };
 
     for (const symbol of this.SYMBOLS) {
       let count = 0;
@@ -381,33 +346,28 @@ export class SkolSlotComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (count >= 2 && this.PAYTABLE[symbol]?.[count]) {
         const payout = this.PAYTABLE[symbol][count] * this.currentBet;
-
-        if (payout > bestWin.payout) {
-          bestWin = {
-            payout,
-            positions: Array.from({ length: count }, (_, i) => i),
-            symbol,
-            count,
-          };
+        if (payout > best.payout) {
+          best = { payout, positions: Array.from({ length: count }, (_, i) => i), symbol, count };
         }
       }
     }
 
-    return bestWin;
+    return best;
   }
 
   private showWinAnimation(amount: number): void {
     const totalBet = this.currentBet * 25;
-    const multiplier = amount / totalBet;
+    const mult = amount / totalBet;
 
-    if (multiplier >= 100) this.winTitle = '💎🏆 LEGENDARY WIN! 🏆💎';
-    else if (multiplier >= 50) this.winTitle = '🏆💎 MEGA JACKPOT! 💎🏆';
-    else if (multiplier >= 25) this.winTitle = '🏆 JACKPOT! 🏆';
-    else if (multiplier >= 10) this.winTitle = '⚡ BIG WIN! ⚡';
-    else if (multiplier >= 5) this.winTitle = '💰 GREAT WIN! 💰';
-    else this.winTitle = '✨ WINNER! ✨';
+    this.winTitle =
+      mult >= 100 ? '💎🏆 LEGENDARY WIN! 🏆💎' :
+      mult >= 50  ? '🏆💎 MEGA JACKPOT! 💎🏆' :
+      mult >= 25  ? '🏆 JACKPOT! 🏆' :
+      mult >= 10  ? '⚡ BIG WIN! ⚡' :
+      mult >= 5   ? '💰 GREAT WIN! 💰' :
+                   '✨ WINNER! ✨';
 
-    this.winAmount = amount + ' CREDITS';
+    this.winAmount = `${amount} CREDITS`;
     this.showWinOverlay = true;
 
     setTimeout(() => {
@@ -424,8 +384,6 @@ export class SkolSlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isSaving = true;
     try {
       await this.creditsService.updateBalance(this.userId, this.balance);
-    } catch (error) {
-      console.error('Error saving balance:', error);
     } finally {
       this.isSaving = false;
     }
